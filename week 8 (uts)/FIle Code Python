@@ -1,0 +1,43 @@
+#include <webots/robot.h>
+#include <webots/motor.h>
+#include <stdio.h>
+
+#define TIME_STEP 64
+#define VELOCITY 2.0  // Kecepatan roda menggunakan satuan (m/s)
+#define TURN_VELOCITY 1.5  // Kecepatan putaran (m/s)
+#define DIAGONAL_TIME 2000 // Durasi pergerakan diagonal dalam milidetik (2 detik)
+
+int main() {
+  wb_robot_init();
+
+  // Inisialisasi motor
+  WbDeviceTag left_motor = wb_robot_get_device("left wheel motor");
+  WbDeviceTag right_motor = wb_robot_get_device("right wheel motor");
+
+  wb_motor_set_position(left_motor, INFINITY);  // Motor dengan posisi tidak terbatas (berputar terus)
+  wb_motor_set_position(right_motor, INFINITY);
+  
+  // Set kecepatan awal
+  wb_motor_set_velocity(left_motor, VELOCITY);
+  wb_motor_set_velocity(right_motor, TURN_VELOCITY);
+
+  while (wb_robot_step(TIME_STEP) != -1) {
+    wb_motor_set_velocity(left_motor, VELOCITY);      // Kecepatan roda kiri
+    wb_motor_set_velocity(right_motor, TURN_VELOCITY);  // Kecepatan roda kanan lebih lambat
+    
+    // Tunggu untuk bergerak dalam diagonal untuk durasi yang cukup
+    wb_robot_step(DIAGONAL_TIME);  // Robot bergerak diagonal selama 2 detik
+    
+    // Ganti arah untuk membuat pola gerakan
+    wb_motor_set_velocity(left_motor, TURN_VELOCITY);   // Ganti kecepatan untuk roda kiri
+    wb_motor_set_velocity(right_motor, VELOCITY);       // Ganti kecepatan untuk roda kanan
+    
+     wb_robot_step(DIAGONAL_TIME);  // Robot bergerak diagonal lagi selama 2 detik
+  }
+  
+  wb_robot_cleanup();
+  return 0;
+}
+
+
+
