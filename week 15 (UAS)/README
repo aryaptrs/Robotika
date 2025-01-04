@@ -1,6 +1,13 @@
 LINK YOUTUBE :
 
 CHAPTER YANG DIKERJAKAN : 1 sampai dengan 4
-HASIL SIMULASI YANG DICAPAI: 
-TANTANGAN YANG DIHADAPI SELAMA PENGERJAAN:
-INSIGHT YANG DIDAPATKAN:
+
+HASIL SIMULASI YANG DICAPAI: Hasil simulasi yang berhasil dicapai yaitu dapat membuat 3D modeling robot pada chapter ke 3, dan dapat melakukan simulasi robot dengan ROS dan juga Gazebo
+
+TANTANGAN YANG DIHADAPI SELAMA PENGERJAAN: Sinyal yang buruk sehingga menyebabkan kelambatan dalam pengerjaan
+
+INSIGHT YANG DIDAPATKAN: Saya mendapatkan beberapa insight dalam pengerjaan UAS ini beberapa diantaranya adalah :
+  1. Pentingnya struktur workspace yang benar
+  2. Cara debugging kesalahan ROS
+  3. Keterhubungan antar depedency
+  4. Kesesuaian nama file
