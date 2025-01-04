@@ -1,0 +1,13 @@
+source /opt/ros/noetic/setup.bash
+cd ~/Downloads 
+cd ~/Downloads/repository
+ls
+mkdir src
+mv Chapter 3/ src/
+cd ~/Downloads/repository
+roscore
+catkin_make
+source devel/setup.bash
+roslaunch mastering_ros_robot_description_pkg view_demo.launch
+roslaunch mastering_ros_robot_description_pkg view_arm.launch
+roslaunch mastering_ros_robot_description_pkg view_mobile_robot.launch
