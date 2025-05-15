@@ -1,1 +1,68 @@
+#include <SPI.h>
+#include <MFRC522.h>
+#include <Servo.h>
 
+#define RST_PIN     9     // Pin reset RFID
+#define SS_PIN      10    // Pin Slave Select RFID
+#define SERVO_PIN   6     // Pin untuk servo
+
+MFRC522 mfrc522(SS_PIN, RST_PIN);  // Instance MFRC522
+Servo myServo;                      // Instance Servo
+
+void setup() {
+  Serial.begin(9600);     // Inisialisasi komunikasi serial
+  SPI.begin();            // Inisialisasi bus SPI
+  mfrc522.PCD_Init();     // Inisialisasi MFRC522
+  myServo.attach(SERVO_PIN); // Attach servo ke pin
+  
+  // Set servo ke posisi awal (0 derajat)
+  myServo.write(0);
+  delay(1000);
+  
+  // Tampilkan detail pembaca RFID
+  mfrc522.PCD_DumpVersionToSerial();
+  Serial.println(F("Tempelkan kartu RFID/NFC di dekat reader..."));
+  Serial.println();
+}
+
+void loop() {
+  // Cek apakah ada kartu baru yang terdeteksi
+  if (!mfrc522.PICC_IsNewCardPresent()) {
+    return;
+  }
+  
+  // Coba baca UID kartu
+  if (!mfrc522.PICC_ReadCardSerial()) {
+    return;
+  }
+  
+  // Tampilkan UID di serial monitor
+  Serial.print(F("UID tag:"));
+  
+  for (byte i = 0; i < mfrc522.uid.size; i++) {
+    Serial.print(mfrc522.uid.uidByte[i] < 0x10 ? " 0" : " ");
+    Serial.print(mfrc522.uid.uidByte[i], HEX);
+  }
+  
+  Serial.println();
+  
+  // Gerakkan servo ketika tag terdeteksi
+  gerakkanServo();
+  
+  // Hentikan enkripsi PCD
+  mfrc522.PICC_HaltA();
+}
+
+void gerakkanServo() {
+  Serial.println("KTM Terdeteksi! Membuka Gerbang...");
+  
+  // Gerak dari 0 ke 90 derajat
+  myServo.write(90);
+  delay(1000);
+  
+  // Kembali ke posisi 0 derajat
+  myServo.write(0);
+  delay(500);
+  
+  Serial.println("Gerbang ditutup kembali");
+}
